@@ -1,9 +1,6 @@
 from rest_framework import serializers
 from .models import Room
-from .models import ReservedRoom
-import datetime
-import pytz
-from utils.exception import ValidationExecption
+from utils.exception import ValidationException
 
 
 class RoomSerializer(serializers.ModelSerializer):

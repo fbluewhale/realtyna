@@ -12,7 +12,7 @@ class BadRequest(APIException):
         self.detail = _get_error_details(detail, code)
 
 
-class ValidationExecption(APIException):
+class ValidationException(APIException):
     status_code = status.HTTP_400_BAD_REQUEST
     default_detail = "Service temporarily unavailable, try again later."
 
