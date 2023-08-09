@@ -1,3 +1,6 @@
 venv
 db.*
 reports/*
+realtyna/logs/*
+__pycache__/
+*.py[cod]
