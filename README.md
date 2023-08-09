@@ -25,9 +25,9 @@ Migrate database and run project:
 ```
 python manage.py migrate
 python manage.py runserver
-
+```
 run tests:
 ```
 python manage.py test
-
+```
 
