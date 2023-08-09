@@ -54,6 +54,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "utils.middleware.RequestLogMiddleware",
+
 ]
 
 ROOT_URLCONF = "realtyna.urls"
@@ -144,3 +146,70 @@ REST_FRAMEWORK = {
 # ABSOLUTE_URL_OVERRIDES = {
 #     "swag.swag": lambda o: "/api/%s/" % o.slug,
 # }
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "error": {
+            "level": "ERROR",
+            "class": "logging.FileHandler",
+            "filename": f"{BASE_DIR}/logs/errors.log",
+        },
+        "incoming": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": f"{BASE_DIR}/logs/incoming.log",
+        }
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["error"],
+            "level": "ERROR",
+            "propagate": True,
+        },
+        "incoming": {
+            "handlers": ["incoming"],
+            "level": "INFO",
+        }
+    },
+}
+'''
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "Error",
+            "class": "logging.FileHandler",
+            "filename": f"{BASE_DIR}/logs/errors.log",
+        },
+        "incoming": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": f"{BASE_DIR}/logs/incoming.log",
+        },
+        "app": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": f"{BASE_DIR}/logs/app.log",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["error"],
+            "level": "Error",
+            "propagate": True,
+        },
+        "incoming": {
+            "handlers": ["incoming"],
+            "level": "INFO",
+            "propagate": True,
+        },
+        "app": {
+            "handlers": ["app"],
+            "level": "INFO",
+            "propagate": True,
+        },
+    },
+}'''
