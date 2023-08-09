@@ -36,3 +36,32 @@ class GetAllRoomTest(TestCase):
         serializer = RoomSerializer(rooms, many=True)
         self.assertEqual(serializer.data, response.data.get("results"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+class GetAllAvailableRoomsViewSetTest(TestCase):
+    """Test module for GET all Available Rooms API"""
+
+    def setUp(self):
+        room_1 = Room.objects.create(title="twin", number=3)
+        ReservedRoom.objects.create(
+            room=room_1, owner="tony", date=datetime.datetime.now()
+        )
+
+    def test_get_all_available_room(self):
+        factory = APIRequestFactory()
+        view = AvailableRoomsViewSet.as_view()
+        request = factory.get(
+            "AvailableRoomsViewSet",
+            {"date": str(datetime.datetime.now().strftime("%Y-%m-%d"))},
+        )
+        response = view(
+            request,
+        )
+        reserved_room_id = (
+            ReservedRoom.objects.filter(date=datetime.datetime.now())
+            .all()
+            .values("room")
+        )
+        available_room_query = Room.objects.exclude(id__in=reserved_room_id).all()
+        serializer = RoomSerializer(available_room_query, many=True)
+        self.assertEqual(serializer.data, response.data.get("results"))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
