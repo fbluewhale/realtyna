@@ -5,6 +5,7 @@ import logging
 
 request_logger = logging.getLogger("incoming")
 
+
 class RequestLogMiddleware:
     """Request Logging Middleware."""
 
@@ -24,9 +25,9 @@ class RequestLogMiddleware:
             log_data["request_body"] = req_body
 
         response = self.get_response(request)
-        print("FUCK",response["content-type"] )
+        print("FUCK", response["content-type"])
 
-        if response and "application/json" in response["content-type"]  :
+        if response and "application/json" in response["content-type"]:
             response_body = json.loads(response.content.decode("utf-8"))
             log_data["response_body"] = response_body
         log_data["duration"] = time.time() - start_time

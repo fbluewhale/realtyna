@@ -16,8 +16,10 @@ from utils.utils import validate_serializer
 from booking.models import ReservedRoom
 from booking.serializer import (
     ReservedRoomSerializer,
-    BookedRoomReportQuerySerializer,)
+    BookedRoomReportQuerySerializer,
+)
 from .utils import create_pdf_report
+
 
 class GetBookingReport(APIView, LimitOffsetPagination):
     @swagger_auto_schema(query_serializer=BookedRoomReportQuerySerializer)
@@ -54,4 +56,4 @@ class GetBookingReportFile(APIView, LimitOffsetPagination):
                 ]
             ).all()
             serializer = ReservedRoomSerializer(report, many=True)
-            return create_pdf_report(serializer,request_params_serializer)
+            return create_pdf_report(serializer, request_params_serializer)

@@ -1,4 +1,3 @@
-
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework import mixins
@@ -18,8 +17,6 @@ from .serializer import (
 from fpdf import FPDF
 
 
-
-
 class ReservedRoomsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     This viewset automatically provides `list` actions.
@@ -32,6 +29,7 @@ class ReservedRoomsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
 class BookingRoomsViewSet(APIView):
     """api view for book the room"""
+
     @swagger_auto_schema(request_body=BookRoomSerializer)
     @validate_serializer(BookRoomSerializer)  # , method="GET")
     def post(self, request):
@@ -49,4 +47,3 @@ class BookingRoomsViewSet(APIView):
                 return Response(booking_serializer.data, status=201)
             date = request_params_serializer.get("date")
             raise BadRequest(f"room is not available at {date}")
-

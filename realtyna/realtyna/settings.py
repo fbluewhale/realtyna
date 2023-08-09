@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "booking",
     "report",
     "utils",
-   
 ]
 
 MIDDLEWARE = [
@@ -55,7 +54,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "utils.middleware.RequestLogMiddleware",
-
 ]
 
 ROOT_URLCONF = "realtyna.urls"
@@ -160,7 +158,7 @@ LOGGING = {
             "level": "DEBUG",
             "class": "logging.FileHandler",
             "filename": f"{BASE_DIR}/logs/incoming.log",
-        }
+        },
     },
     "loggers": {
         "django": {
@@ -171,45 +169,6 @@ LOGGING = {
         "incoming": {
             "handlers": ["incoming"],
             "level": "INFO",
-        }
+        },
     },
 }
-'''
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "file": {
-            "level": "Error",
-            "class": "logging.FileHandler",
-            "filename": f"{BASE_DIR}/logs/errors.log",
-        },
-        "incoming": {
-            "level": "DEBUG",
-            "class": "logging.FileHandler",
-            "filename": f"{BASE_DIR}/logs/incoming.log",
-        },
-        "app": {
-            "level": "DEBUG",
-            "class": "logging.FileHandler",
-            "filename": f"{BASE_DIR}/logs/app.log",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["error"],
-            "level": "Error",
-            "propagate": True,
-        },
-        "incoming": {
-            "handlers": ["incoming"],
-            "level": "INFO",
-            "propagate": True,
-        },
-        "app": {
-            "handlers": ["app"],
-            "level": "INFO",
-            "propagate": True,
-        },
-    },
-}'''

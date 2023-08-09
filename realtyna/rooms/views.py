@@ -13,7 +13,7 @@ from booking.models import ReservedRoom
 
 from .models import Room
 from .serializer import RoomSerializer
-from .serializer import     RoomSerializer
+from .serializer import RoomSerializer
 from fpdf import FPDF
 
 
@@ -24,6 +24,7 @@ class RoomsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
+
 
 class AvailableRoomsViewSet(APIView, LimitOffsetPagination):
     # pagination_class = StandardResultsSetPagination

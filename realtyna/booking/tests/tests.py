@@ -1,6 +1,6 @@
 import datetime
 from django.test import TestCase
-from ..models import  Room
+from ..models import Room
 from rest_framework import status
 from django.test import TestCase
 from ..views import *
@@ -29,7 +29,6 @@ class ReservedRoomTest(TestCase):
         room_2 = Room.objects.get(title="double")
         self.assertEqual(str(reservation_1.room.id), str(room_1.id))
         self.assertEqual(str(reservation_2.room.id), str(room_2.id))
-
 
 
 class GetAllReservedRoomsViewSetTest(TestCase):

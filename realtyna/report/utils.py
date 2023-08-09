@@ -3,16 +3,15 @@ from django.http import FileResponse
 
 from fpdf import FPDF
 
-def create_pdf_report(serializer,request_params_serializer):
+
+def create_pdf_report(serializer, request_params_serializer):
     pdf = FPDF("P", "mm", "A4")
     pdf.add_page()
     pdf.set_font("courier", "B", 16)
     pdf.cell(40, 10, "Booked room reports:", 0, 1)
     pdf.cell(40, 10, "", 0, 1)
     pdf.set_font("courier", "", 12)
-    pdf.cell(
-        200, 8, f"{'room'.ljust(32)} {'date'.rjust(10)} {'owner'.rjust(20)}", 0, 1
-    )
+    pdf.cell(200, 8, f"{'room'.ljust(32)} {'date'.rjust(10)} {'owner'.rjust(20)}", 0, 1)
     pdf.line(10, 30, 190, 30)
     pdf.line(10, 38, 190, 38)
     for line in serializer.data:

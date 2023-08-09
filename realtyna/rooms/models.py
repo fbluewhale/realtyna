@@ -8,4 +8,3 @@ class Room(BaseModel):
 
     def __str__(self) -> str:
         return f"{self.title}-{self.number}"
-

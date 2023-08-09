@@ -1,8 +1,8 @@
 from django.test import TestCase
-from ..models import  Room
+from ..models import Room
 from rest_framework import status
 from django.test import TestCase
-from ..serializer import  RoomSerializer
+from ..serializer import RoomSerializer
 from ..views import *
 from rest_framework.test import APIRequestFactory
 
@@ -20,6 +20,7 @@ class RoomTest(TestCase):
         self.assertEqual(room_1.number, 3)
         self.assertEqual(room_2.number, 1)
 
+
 class GetAllRoomTest(TestCase):
     """Test module for GET all rooms API"""
 
@@ -36,6 +37,7 @@ class GetAllRoomTest(TestCase):
         serializer = RoomSerializer(rooms, many=True)
         self.assertEqual(serializer.data, response.data.get("results"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
 
 class GetAllAvailableRoomsViewSetTest(TestCase):
     """Test module for GET all Available Rooms API"""

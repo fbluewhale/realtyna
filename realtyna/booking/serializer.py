@@ -5,7 +5,6 @@ from .models import ReservedRoom
 from utils.exception import ValidationException
 
 
-
 class ReservedRoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReservedRoom
@@ -24,6 +23,7 @@ class AvailableRoomSerializer(serializers.Serializer):
 class CheckRoomIsAvailableSerializer(serializers.Serializer):
     date = serializers.DateTimeField(input_formats=["%Y-%m-%d"])
     room = serializers.UUIDField()
+
 
 class BookRoomSerializer(serializers.ModelSerializer):
     class Meta:
