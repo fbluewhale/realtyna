@@ -45,7 +45,8 @@ class GetAllAvailableRoomsViewSetTest(TestCase):
     def setUp(self):
         room_1 = Room.objects.create(title="twin", number=3)
         ReservedRoom.objects.create(
-            room=room_1, owner="tony", date=datetime.datetime.now()
+            room=room_1, owner="tony", checking_date = datetime.datetime.now(),
+            checkout_date = datetime.datetime.now()+ datetime.timedelta(days=1)
         )
 
     def test_get_all_available_room(self):
@@ -53,13 +54,17 @@ class GetAllAvailableRoomsViewSetTest(TestCase):
         view = AvailableRoomsViewSet.as_view()
         request = factory.get(
             "AvailableRoomsViewSet",
-            {"date": str(datetime.datetime.now().strftime("%Y-%m-%d"))},
+            {"checking_date": datetime.datetime.now().strftime("%Y-%m-%d"),
+            "checkout_date" :( datetime.datetime.now()+ datetime.timedelta(days=1)).strftime("%Y-%m-%d")}
+            # {"date": str(datetime.datetime.now().strftime("%Y-%m-%d"))},
         )
         response = view(
             request,
         )
         reserved_room_id = (
-            ReservedRoom.objects.filter(date=datetime.datetime.now())
+            ReservedRoom.objects.filter(
+                checking_date__gte = datetime.datetime.now(),
+                checkout_date__lte = datetime.datetime.now()+ datetime.timedelta(days=1) ,            )
             .all()
             .values("room")
         )

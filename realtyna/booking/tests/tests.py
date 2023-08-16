@@ -14,13 +14,15 @@ class ReservedRoomTest(TestCase):
         ReservedRoom.objects.create(
             room=room_1,
             owner="tony",
-            date=datetime.datetime.now() + datetime.timedelta(days=1),
+                checking_date = datetime.datetime.now(),
+                checkout_date = datetime.datetime.now()+ datetime.timedelta(days=1) ,      
         )
         ReservedRoom.objects.create(
             room=room_2,
             owner="mohammad",
-            date=datetime.datetime.now() + datetime.timedelta(days=1),
-        )
+            checking_date = datetime.datetime.now(),
+            checkout_date = datetime.datetime.now()+ datetime.timedelta(days=1) ,
+            )
 
     def test_create_reservation(self):
         reservation_1 = ReservedRoom.objects.get(owner="tony")
@@ -40,13 +42,13 @@ class GetAllReservedRoomsViewSetTest(TestCase):
         ReservedRoom.objects.create(
             room=room_1,
             owner="tony",
-            date=datetime.datetime.now() + datetime.timedelta(days=1),
-        )
+            checking_date = datetime.datetime.now(),
+            checkout_date = datetime.datetime.now()+ datetime.timedelta(days=1) ,        )
         ReservedRoom.objects.create(
             room=room_2,
             owner="mohammad",
-            date=datetime.datetime.now() + datetime.timedelta(days=1),
-        )
+            checking_date = datetime.datetime.now(),
+            checkout_date = datetime.datetime.now()+ datetime.timedelta(days=1) ,        )
 
     def test_get_all_reservation(self):
         factory = APIRequestFactory()
@@ -72,7 +74,8 @@ class BookingRoomsViewSetTest(TestCase):
         request = factory.post(
             "BookingRoomsViewSet",
             {
-                "date": str(datetime.datetime.now().strftime("%Y-%m-%d")),
+                "checking_date": "2022-10-17",
+                "checkout_date": "2023-11-18",
                 "owner": "reza",
                 "room": str(room_1.id),
             },
@@ -82,7 +85,8 @@ class BookingRoomsViewSetTest(TestCase):
         )
 
         reserved_room = ReservedRoom.objects.get(
-            date=str(datetime.datetime.now().strftime("%Y-%m-%d")),
+            checking_date__gte = datetime.datetime.now()- datetime.timedelta(days=365),
+            checkout_date__lte = datetime.datetime.now()+ datetime.timedelta(days=365) ,
             owner="reza",
             room=str(room_1.id),
         )
