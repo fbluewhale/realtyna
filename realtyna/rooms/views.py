@@ -14,8 +14,7 @@ from booking.models import ReservedRoom
 from .models import Room
 from .serializer import RoomSerializer
 from .serializer import RoomSerializer
-from fpdf import FPDF
-
+from .helpers import handle_get_available_room
 
 class RoomsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
@@ -29,21 +28,10 @@ class RoomsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 class AvailableRoomsViewSet(APIView, LimitOffsetPagination):
     # pagination_class = StandardResultsSetPagination
 
-    # @validate_serializer(AvailableRoomSerializer)
     @swagger_auto_schema(query_serializer=AvailableRoomSerializer)
     @validate_serializer(AvailableRoomSerializer)
     def get(self, request):
-        request_params_serializer = AvailableRoomSerializer(data=request.GET)
-        request_params_serializer = (
-            request_params_serializer.is_valid()
-            and request_params_serializer.validated_data
-        )
-        reserved_room_id = (
-            ReservedRoom.objects.filter(date=request_params_serializer.get("date"))
-            .all()
-            .values("room")
-        )
-        available_room_query = Room.objects.exclude(id__in=reserved_room_id).all()
+        available_room_query = handle_get_available_room(request.GET)
         available_room_query = self.paginate_queryset(
             available_room_query, request, view=self
         )
