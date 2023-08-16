@@ -30,10 +30,9 @@ class GetBookingReport(APIView, LimitOffsetPagination):
             request_params_serializer = request_params_serializer.validated_data
             report = self.paginate_queryset(
                 ReservedRoom.objects.filter(
-                    date__range=[
-                        request_params_serializer.get("start_date"),
-                        request_params_serializer.get("end_date"),
-                    ]
+                    checking_date__lte = request_params_serializer.get("end_date"),
+                    checking_date__gte = request_params_serializer.get("start_date"),
+                    
                 ).all(),
                 request,
                 view=self,
@@ -50,10 +49,9 @@ class GetBookingReportFile(APIView, LimitOffsetPagination):
         if request_params_serializer.is_valid():
             request_params_serializer = request_params_serializer.validated_data
             report = ReservedRoom.objects.filter(
-                date__range=[
-                    request_params_serializer.get("start_date"),
-                    request_params_serializer.get("end_date"),
-                ]
+                    checking_date__lte = request_params_serializer.get("end_date"),
+                    checking_date__gte = request_params_serializer.get("start_date"),
+                    
             ).all()
             serializer = ReservedRoomSerializer(report, many=True)
             return create_pdf_report(serializer, request_params_serializer)
