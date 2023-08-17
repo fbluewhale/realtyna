@@ -1,6 +1,7 @@
 venv
 db.*
-reports/*
+*/reports/*
 realtyna/logs/*
 __pycache__/
 *.py[cod]
+.vscode
