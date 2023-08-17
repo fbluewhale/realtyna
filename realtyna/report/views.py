@@ -19,39 +19,21 @@ from booking.serializer import (
     BookedRoomReportQuerySerializer,
 )
 from .utils import create_pdf_report
-
+from .helpers import handle_get_report_file,handle_get_report
 
 class GetBookingReport(APIView, LimitOffsetPagination):
     @swagger_auto_schema(query_serializer=BookedRoomReportQuerySerializer)
     @validate_serializer(BookedRoomReportQuerySerializer)  # , method="GET")
     def get(self, request):
-        request_params_serializer = BookedRoomReportQuerySerializer(data=request.GET)
-        if request_params_serializer.is_valid():
-            request_params_serializer = request_params_serializer.validated_data
-            report = self.paginate_queryset(
-                ReservedRoom.objects.filter(
-                    checking_date__lte = request_params_serializer.get("end_date"),
-                    checking_date__gte = request_params_serializer.get("start_date"),
-                    
-                ).all(),
-                request,
-                view=self,
-            )
-            serializer = ReservedRoomSerializer(report, many=True)
-            return self.get_paginated_response(serializer.data)
+        reports =  handle_get_report(request.GET)
+        paginate_reports = self.paginate_queryset(reports, request,view=self)
+        serializer = ReservedRoomSerializer(paginate_reports, many=True)
+        return self.get_paginated_response(serializer.data)
+
 
 
 class GetBookingReportFile(APIView, LimitOffsetPagination):
     @swagger_auto_schema(query_serializer=BookedRoomReportQuerySerializer)
     @validate_serializer(BookedRoomReportQuerySerializer)  # , method="GET")
     def get(self, request):
-        request_params_serializer = BookedRoomReportQuerySerializer(data=request.GET)
-        if request_params_serializer.is_valid():
-            request_params_serializer = request_params_serializer.validated_data
-            report = ReservedRoom.objects.filter(
-                    checking_date__lte = request_params_serializer.get("end_date"),
-                    checking_date__gte = request_params_serializer.get("start_date"),
-                    
-            ).all()
-            serializer = ReservedRoomSerializer(report, many=True)
-            return create_pdf_report(serializer, request_params_serializer)
+        return handle_get_report_file(request.GET)

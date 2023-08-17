@@ -43,7 +43,7 @@ class BookRoomSerializer(serializers.ModelSerializer):
 class BookedRoomReportQuerySerializer(serializers.Serializer):
     start_date = serializers.DateTimeField(input_formats=["%Y-%m-%d"])
     end_date = serializers.DateTimeField(input_formats=["%Y-%m-%d"])
-
+    room =  serializers.UUIDField(required=False)
     # def validate_start_date(self, value):
     #     if value >= datetime.datetime.now().replace(tzinfo=pytz.UTC):
     #         raise ValidationException("")
