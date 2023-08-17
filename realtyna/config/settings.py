@@ -56,7 +56,7 @@ MIDDLEWARE = [
     "utils.middleware.RequestLogMiddleware",
 ]
 
-ROOT_URLCONF = "realtyna.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "realtyna.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database
@@ -134,16 +134,14 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
     "DEFAULT_RENDERER_CLASSES": (
-        "utils.renderer.JSONResponseRenderer",
+        "utils.wrapper.JSONResponseWrapper",
         "rest_framework.renderers.BrowsableAPIRenderer",
     ),
     "EXCEPTION_HANDLER": "utils.exeption_handler.custom_exception_handler",
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
 }
 
-# ABSOLUTE_URL_OVERRIDES = {
-#     "swag.swag": lambda o: "/api/%s/" % o.slug,
-# }
+
 
 LOGGING = {
     "version": 1,
@@ -151,17 +149,31 @@ LOGGING = {
     "handlers": {
         "error": {
             "level": "ERROR",
-            "class": "logging.FileHandler",
+            "class": "logging.handlers.RotatingFileHandler",
             "filename": f"{BASE_DIR}/logs/errors.log",
+            "maxBytes": 1024 * 1024 * 100,  # 100 mb
         },
         "incoming": {
             "level": "DEBUG",
-            "class": "logging.FileHandler",
+            "class": "logging.handlers.RotatingFileHandler",
             "filename": f"{BASE_DIR}/logs/incoming.log",
+            "maxBytes": 1024 * 1024 * 100,  # 100 mb
+        },
+        "app": {
+            "level": "DEBUG",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": f"{BASE_DIR}/logs/app.log",
+            "maxBytes": 1024 * 1024 * 100,  # 100 mb
+        },
+        "celery": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": f"{BASE_DIR}/logs/celery.log",
+            "maxBytes": 1024 * 1024 * 100,  # 100 mb
         },
     },
     "loggers": {
-        "django": {
+        "error": {
             "handlers": ["error"],
             "level": "ERROR",
             "propagate": True,
@@ -169,6 +181,14 @@ LOGGING = {
         "incoming": {
             "handlers": ["incoming"],
             "level": "INFO",
+        },
+        "app": {
+            "handlers": ["app"],
+            "level": "INFO",
+        },
+        "celery": {
+            "handlers": ["celery"],
+            "level": "DEBUG",
         },
     },
 }
